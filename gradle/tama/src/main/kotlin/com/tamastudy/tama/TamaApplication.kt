@@ -1,5 +1,6 @@
 package com.tamastudy.tama
 
+import org.springframework.boot.autoconfigure.AutoConfigurationPackage
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
