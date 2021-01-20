@@ -20,7 +20,7 @@ spring:
 
 logging:
   level:
-    me.silvernine: DEBUG
+    com.tamastudy: DEBUG
 
 jwt:
   header: Authorization
