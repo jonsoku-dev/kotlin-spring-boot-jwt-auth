@@ -10,8 +10,9 @@ import javax.servlet.http.HttpServletResponse
 
 @Component
 class JwtAccessDeniedHandler : AccessDeniedHandler {
-    @Throws(IOException::class)
     override fun handle(request: HttpServletRequest?, response: HttpServletResponse?, accessDeniedException: AccessDeniedException?) {
-        response?.sendError(HttpServletResponse.SC_FORBIDDEN);
+        response?.sendError(HttpServletResponse.SC_FORBIDDEN).let {
+            throw IOException()
+        }
     }
 }
