@@ -1,10 +1,13 @@
 package com.tamastudy.tama.config
 
+import com.tamastudy.tama.filter.MyFilter3
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
+import org.springframework.security.web.context.SecurityContextPersistenceFilter
 import org.springframework.web.filter.CorsFilter
 
 @Configuration
@@ -14,6 +17,7 @@ class SecurityConfig(
 ): WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
         http
+                .addFilterBefore(MyFilter3(), SecurityContextPersistenceFilter::class.java)
                 .csrf().disable() // token 방식으로 사용
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // session 이용하지 않음
                 .and()
