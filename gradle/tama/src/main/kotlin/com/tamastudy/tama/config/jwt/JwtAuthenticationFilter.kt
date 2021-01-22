@@ -1,5 +1,7 @@
 package com.tamastudy.tama.config.jwt
 
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.tamastudy.tama.config.auth.PrincipalDetails
 import com.tamastudy.tama.entity.User
@@ -7,8 +9,8 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import sun.security.util.SecurityConstants
 import java.io.IOException
+import java.util.*
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -40,8 +42,17 @@ class JwtAuthenticationFilter(authenticationManager: AuthenticationManager) : Us
 
     // 2. attemptAuthentication 에서 성공하면 여기로 넘어온다.
     // JWT 토큰을 만들어서 request 요청한 사용자에게 JWT 를 response 해주면 됨
-    override fun successfulAuthentication(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain?, authResult: Authentication?) {
+    override fun successfulAuthentication(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain?, authResult: Authentication) {
         println("successfulAuthentication 실행됨 : 인증이 완료되었다는 뜻임")
-        super.successfulAuthentication(request, response, chain, authResult)
+        val principalDetails = authResult.principal as PrincipalDetails
+
+        JWT.create()
+                .withSubject("tamastudy token")
+                .withExpiresAt(Date(System.currentTimeMillis() + (600000 * 10)))
+                .withClaim("username", principalDetails.username)
+                .sign(Algorithm.HMAC512("tamastudy"))
+                .let { token ->
+                    response.addHeader("Authorization", "Bearer $token")
+                }
     }
 }
