@@ -11,7 +11,7 @@ data class User(
         var id: Long,
         var username: String,
         var password: String,
-        var roles: String // ROLE_USER, ROLE_MANAGER, ROLE_ADMIN
+        var roles: String = ""// ROLE_USER, ROLE_MANAGER, ROLE_ADMIN
 ) {
     fun getRoleList(): MutableList<String> {
         val list = mutableListOf<String>()
